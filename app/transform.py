@@ -18,7 +18,6 @@ def transform(orders, restaurants):
     )
 
     # 2. Restaurants Table
-    # Standardize column layouts if needed (keeps original structure)
     restaurants_table = restaurants.rename(
         columns={
             "RestaurantID": "RestaurantID",
@@ -30,7 +29,6 @@ def transform(orders, restaurants):
     )
 
     # 3. Orders Table (Main Fact Table)
-    # Isolate core transaction metrics
     orders_table = orders[[
         "Order ID",
         "CustomerID",
@@ -52,7 +50,6 @@ def transform(orders, restaurants):
     ]
     
     # 4. Order Details Table (Ratings & Items)
-    # Isolate order fulfillment specifics
     order_details = orders[[
         "Order ID",
         "Quantity of Items",
