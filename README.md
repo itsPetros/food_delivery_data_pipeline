@@ -101,3 +101,47 @@ Data was split into relational tables
 Data consistency between orders and restaurants was maintained
 
 These steps helped organize the data into a cleaner and more structured format for SQL analysis.
+
+Schema
+schema.sql defines the full database structure with constraints and indexes.
+Constraints:
+Category — only accepts Pro or Ordinary
+OrderAmount — cannot be negative
+DeliveryTime — cannot be negative
+FoodRating / DeliveryRating — must be between 1 and 5
+QuantityItems — must be greater than 0
+Foreign keys on orders → customers and orders → restaurants
+Indexes:
+idx_orders_customer — on orders.CustomerID
+idx_orders_restaurant — on orders.RestaurantID
+idx_orders_date — on orders.OrderDate
+
+Data Model
+The pipeline produces four tables:
+Table
+Description
+customers
+Unique customers derived from order data
+restaurants
+Restaurant info — name, cuisine, zone, category
+orders
+Main fact table — order amounts, dates, payment, delivery time
+order_details
+Ratings and item quantities per order
+orders is the central fact table. customers and restaurants are dimension tables. order_details is a 1:1 extension of orders for rating data.
+
+Analytical Queries
+queries.sql contains 6 ready-to-run queries:
+Top 5 restaurants by total revenue with average delivery time and food rating
+Payment mode breakdown — order count, % share, and average order value per payment type
+VIP customers — top 10 spenders with their average ratings
+Zone performance — delivery speed and satisfaction score by delivery zone
+Slow delivery detector — flags orders where delivery took more than 1.5× the restaurant's own average
+Cuisine popularity vs. satisfaction — order volume and ratings grouped by cuisine type
+Source Data
+Field
+Description
+orders.csv
+Order ID, customer name, restaurant ID, date, amount, payment mode, delivery time, food & delivery ratings, item quantity
+restaurants.csv
+Restaurant ID, name, cuisine type, delivery zone, category (Pro / Ordinary)
